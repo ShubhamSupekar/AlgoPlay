@@ -1,0 +1,7 @@
+
+conda env create -f environment.yaml
+Run above command to create virtual environment 
+
+
+uvicorn main:app --reload
+to run webapp run above command 
