@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
@@ -9,61 +9,42 @@ import model.LinearRegression.LinearRegression as lr
 # Create the FastAPI app instance
 app = FastAPI()
 
-# Store the dataframe globally after loading
+# Global variable to store the DataFrame
 df = None
 
-
+# Datasets mapping
 datasets = {
-    "canada-house-price": "datasets\Linear Regression\housing.csv",
-    "laptop-price": "datasets\Linear Regression\laptop_price - dataset.csv",
-    "customer-behaviour": "datasets\Linear Regression\Customer Purchasing Behaviors.csv"
+    "canada-house-price": "datasets/Linear Regression/housing.csv",
+    "laptop-price": "datasets/Linear Regression/laptop_price - dataset.csv",
+    "customer-behaviour": "datasets/Linear Regression/Customer Purchasing Behaviors.csv"
 }
 
-# "static" directory to serve CSS files
+# Static files directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Jinja2 templates object
 templates = Jinja2Templates(directory="templates")
 
-
-
-# home page
+# Home page
 @app.get("/")
 async def home(request: Request):
-    # Render the home page with no message initially
-
     return templates.TemplateResponse("index.html", {
         "request": request,
-        "selected_dataset": None  # No dataset selected initially
+        "selected_dataset": None
     })
 
-
-# @app.post("/train")
-# async def train_model(dataset: str = Form(...)):
-#     global df
-#     if df is not None:
-#         try:
-#             lr.LoadDataset(df)
-#             message = f"Model training started for dataset '{dataset}'."
-#         except Exception as e:
-#             message = f"Error during training: {str(e)}"
-#     else:
-#         message = "No dataset loaded for training."
-
-#     # Redirect back to the homepage with a message
-#     return RedirectResponse(url=f"/?message={message}", status_code=303)
-
-
-
+# Data processing
 @app.post("/process-dataset")
 async def process_dataset(request: Request, dataset: str = Form(...)):
+    global df  # Use the global df variable
     file_path = datasets.get(dataset)
-    
+
     if file_path:
         try:
             # Load the selected dataset
             df = pd.read_csv(file_path)
-            columns = df.columns.tolist()  # Convert Index object to a list
+            columns = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+            df = df[columns]  # Filter to include only numeric columns
             message = f"Dataset '{dataset}' successfully loaded."
         except Exception as e:
             message = f"Error loading dataset: {str(e)}"
@@ -72,11 +53,34 @@ async def process_dataset(request: Request, dataset: str = Form(...)):
         message = "Invalid dataset selected."
         columns = []
 
-    # Render the response with the success or failure message and keep the selected dataset
+    # Render the response with the message and selected dataset
     return templates.TemplateResponse("index.html", {
         "request": request, 
         "message": message,
-        "selected_dataset": dataset,  # Pass the selected dataset back to the template
-        "columns": columns  # Pass columns as a list to the template
+        "selected_dataset": dataset,
+        "columns": columns
     })
 
+@app.post("/train")
+async def train_model(request: Request, predictor_column: str = Form(...)):
+    global df  # Access the global df variable
+    # Validate the column selected
+    if df is None:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": "No dataset loaded. Please load a dataset first."
+        })
+
+    if predictor_column not in df.columns:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": "Invalid predictor column selected."
+        })
+    
+    best_features, best_r2 = lr.StartTraining(predictor_column, df)
+
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "best_features": best_features,
+        "best_r2": best_r2
+    })

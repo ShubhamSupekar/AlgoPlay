@@ -36,7 +36,6 @@
                     <button type="submit">Submit</button>
                 </form>
             </div>
-
             <!-- Display success or error message based on backend response -->
             {% if message %}
                 <div id="result">
@@ -53,6 +52,32 @@
                             <li>{{ column }}</li>
                         {% endfor %}
                     </ul>
+
+                    <!-- Dropdown to select a field to predict -->
+                    <form action="/train" method="post">
+                        <h4>Select a Column for Prediction:</h4>
+                        <select name="predictor_column" required>
+                            <option value="">Select a column</option>
+                            {% for column in columns %}
+                                <option value="{{ column }}">{{ column }}</option>
+                            {% endfor %}
+                        </select>
+                        <br><br>
+                        <button type="submit">Train Model</button>
+                    </form>
+                </div>
+            {% endif %}
+
+            <!-- Display best features and R² value -->
+            {% if best_features %}
+                <div id="result">
+                    <h3>Best Features:</h3>
+                    <ul>
+                        {% for feature in best_features %}
+                            <li>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p><strong>Best R² Value:</strong> {{ best_r2 }}</p>
                 </div>
             {% endif %}
         </section>
