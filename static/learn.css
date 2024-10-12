@@ -27,7 +27,7 @@ header h1 {
     color: white; /* White text */
     text-decoration: none; /* Remove underline */
     padding: 5px 10px; /* Padding for button */
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 50px; /* Rounded corners */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
