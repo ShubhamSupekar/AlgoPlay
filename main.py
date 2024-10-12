@@ -61,26 +61,34 @@ async def process_dataset(request: Request, dataset: str = Form(...)):
         "columns": columns
     })
 
+
+
 @app.post("/train")
-async def train_model(request: Request, predictor_column: str = Form(...)):
+async def train_model(request: Request, predictor_column: str = Form(...), dataset: str = Form(...)):
     global df  # Access the global df variable
-    # Validate the column selected
+
+    # Validate if a dataset is loaded
     if df is None:
         return templates.TemplateResponse("index.html", {
             "request": request,
             "error": "No dataset loaded. Please load a dataset first."
         })
 
+    # Validate the selected predictor column
     if predictor_column not in df.columns:
         return templates.TemplateResponse("index.html", {
             "request": request,
             "error": "Invalid predictor column selected."
         })
-    
+
+    # Train the model using the selected predictor column
     best_features, best_r2 = lr.StartTraining(predictor_column, df)
 
+    # Return the template with the dataset, best features, and R² score
     return templates.TemplateResponse("index.html", {
         "request": request,
         "best_features": best_features,
-        "best_r2": best_r2
+        "best_r2": best_r2,
+        "dataset_used": dataset,  # Show which dataset was used in training
+        "selected_dataset": dataset
     })

@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="#">Learn</a></li>
-                <li><a href="#">Features</a></li>
+                <li><a href="#">History</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
@@ -36,6 +36,7 @@
                     <button type="submit">Submit</button>
                 </form>
             </div>
+
             <!-- Display success or error message based on backend response -->
             {% if message %}
                 <div id="result">
@@ -62,13 +63,16 @@
                                 <option value="{{ column }}">{{ column }}</option>
                             {% endfor %}
                         </select>
+
+                        <!-- Hidden field to pass the selected dataset name to /train -->
+                        <input type="hidden" name="dataset" value="{{ selected_dataset }}">
                         <br><br>
                         <button type="submit">Train Model</button>
                     </form>
                 </div>
             {% endif %}
 
-            <!-- Display best features and R² value -->
+            <!-- Display best features, R² value, and dataset used -->
             {% if best_features %}
                 <div id="result">
                     <h3>Best Features:</h3>
@@ -78,6 +82,11 @@
                         {% endfor %}
                     </ul>
                     <p><strong>Best R² Value:</strong> {{ best_r2 }}</p>
+                    
+                    <!-- Display the dataset used for training -->
+                    {% if dataset_used %}
+                        <p><strong>Dataset Used:</strong> {{ dataset_used }}</p>
+                    {% endif %}
                 </div>
             {% endif %}
         </section>
