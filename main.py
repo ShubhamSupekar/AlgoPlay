@@ -2,9 +2,12 @@ from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from starlette.requests import Request
 import pandas as pd 
 import model.LinearRegression.LinearRegression as lr 
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
 # Create the FastAPI app instance
 app = FastAPI()
@@ -92,3 +95,32 @@ async def train_model(request: Request, predictor_column: str = Form(...), datas
         "dataset_used": dataset,  # Show which dataset was used in training
         "selected_dataset": dataset
     })
+
+
+# Model to return results
+class LinearRegressionResult(BaseModel):
+    slope: float
+    intercept: float
+
+# Serve the Learn page
+@app.get("/learn")
+async def get_learn_page(request: Request):
+    return templates.TemplateResponse("learn.html", {"request": request})
+
+# Endpoint to run the Python code and return the result
+@app.post("/run-python", response_model=LinearRegressionResult)
+async def run_python():
+    # Data
+    x = np.array([2, 4, 6, 8]).reshape(-1, 1)
+    y = np.array([3, 7, 5, 10])
+
+    # Create and fit the model
+    model = LinearRegression()
+    model.fit(x, y)
+
+    # Get the slope and intercept
+    slope = model.coef_[0]
+    intercept = model.intercept_
+
+    # Return the results
+    return LinearRegressionResult(slope=slope, intercept=intercept)

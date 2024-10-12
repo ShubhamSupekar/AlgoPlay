@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoPlay</title>
+    <link rel="stylesheet" href="static\learn.css">
+    <script>
+        function showPythonResult() {
+            // Make a POST request to run the Python code
+            fetch('/run-python', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show the Python output
+                document.getElementById('python-result').innerHTML = `
+                    <p><strong>Python Result:</strong></p>
+                    <p>Slope (m): ${data.slope}</p>
+                    <p>Intercept (b): ${data.intercept}</p>
+                    <p>Linear Equation: y = ${data.slope}x + ${data.intercept}</p>
+                `;
+                // Reveal the mathematical solution after showing the Python result
+                document.getElementById('math-solution').style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Learn</h1>
+        <a href="/" class="home-button">Home</a>
+    </header>
+
+    <main>
+    <h1>Linear Regression</h1>
+        <section>
+            <h2>Step 1: Python Code</h2>
+            <pre>
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+x = np.array([2, 4, 6, 8]).reshape(-1, 1)
+y = np.array([3, 7, 5, 10])
+
+model = LinearRegression()
+model.fit(x, y)
+
+m = model.coef_[0]
+b = model.intercept_
+
+print(f"Slope (m): {m}")
+print(f"Intercept (b): {b}")
+print(f"Linear Equation: y = {m}x + {b}")
+            </pre>
+            <button onclick="showPythonResult()">Run Python Code</button>
+
+            <div id="python-result"></div>
+        </section>
+
+        <section id="math-solution" style="display:none;">
+            <h2>Step 2: Mathematical Solution</h2>
+            <p>Let's calculate the slope (m) and intercept (b) step-by-step:</p>
+
+            <h3>1. Sum Calculations</h3>
+            <ul>
+                <li>Sum of x: ( ∑x = 2 + 4 + 6 + 8 = 20 )</li>
+                <li>Sum of y: ( ∑y = 3 + 7 + 5 + 10 = 25 )</li>
+                <li>Sum of x²: (∑x² = 4 + 16 + 36 + 64 = 120 )</li>
+                <li>Sum of xy: ( ∑xy = 6 + 28 + 30 + 80 = 144 )</li>
+            </ul>
+
+            <h3>2. Calculating the Slope (m)</h3>
+            <p>
+                Using the formula:
+                m= [n(Σxy)−(Σx)(Σy)] / [n(Σx²)-(Σx)²]
+                <li>n is the number of data points</li>
+                <li>Σxy is the sum of the products of 𝑥 and y</li>
+                <li>Σx is the sum of all 𝑥 values</li>
+                <li>Σy is the sum of all y values</li>
+                <li>Σx² is the sum of all x² values</li>​
+            </p>
+            <p>
+                Substituting the values:
+                m = [(4 × 144)-(20 x 25)] / [(4 x 120) - (20)²]
+                <li>m = 0.95</li>   
+            </p>
+
+            <h3>3. Calculating the Intercept (b)</h3>
+            <p>
+                Using the formula:
+                b = [(Σy)(Σx²)-(Σx)(Σxy)] / [n(Σx²)-(Σx)²]
+            </p>
+            <p>
+                Substituting the values:
+                b = [(25 x 120)-(20 x 144)] / [(4x120)-100]
+                <li>b = 1.5</li>    
+            </p>
+
+            <h3>Final Linear Equation</h3>
+            <p> y = mx + b</p>
+            <p>The equation of the line is: ( y = 0.95x + 1.5 )</p>
+        </section>
+    </main>
+</body>
+</html>
