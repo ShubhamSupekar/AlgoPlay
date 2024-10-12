@@ -25,6 +25,15 @@
             })
             .catch(error => console.error('Error:', error));
         }
+        function copyToClipboard(text) {
+            const input = document.createElement('textarea'); // Create a textarea element
+            input.value = text; // Set the text to be copied
+            document.body.appendChild(input); // Append to the body
+            input.select(); // Select the text
+            document.execCommand('copy'); // Copy the text
+            document.body.removeChild(input); // Remove the textarea
+            alert('Code copied to clipboard!'); // Notify the user
+        }
     </script>
 </head>
 <body>
@@ -38,6 +47,7 @@
         <section>
             <h2>Step 1: Python Code</h2>
             <pre>
+                <code id="pythonCode">
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
@@ -53,9 +63,10 @@ b = model.intercept_
 print(f"Slope (m): {m}")
 print(f"Intercept (b): {b}")
 print(f"Linear Equation: y = {m}x + {b}")
+</code>
             </pre>
             <button onclick="showPythonResult()">Run Python Code</button>
-
+            <button onclick="copyToClipboard(document.getElementById('pythonCode').innerText)">Copy Code</button>
             <div id="python-result"></div>
         </section>
 
