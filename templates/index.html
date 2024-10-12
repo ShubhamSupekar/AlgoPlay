@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlgoPlay</title>
+    <title>AlgoPlay - Linear Regression</title>
     <link rel="stylesheet" href="static\style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#">Learn</a></li>
                 <li><a href="#">Features</a></li>
                 <li><a href="#">Contact Us</a></li>
@@ -25,14 +25,24 @@
         <section>
             <h2>Linear Regression</h2>
             <div class="file-upload-section">
-                <label for="file-upload">Upload Data File:</label>
-                <input type="file" id="file-upload">
-                <p>or select preloaded data:</p>
-                <select id="preloaded-data">
-                    <option value="housing-data.csv">Housing Data</option>
-                    <option value="user-data.csv">User Data</option>
-                </select>
+                <form action="/process-dataset" method="post">
+                    <p>Select a dataset:</p>
+                    <select name="dataset" id="preloaded-data">
+                        <option value="canada-house-price" {% if selected_dataset == 'canada-house-price' %}selected{% endif %}>Canada House Price</option>
+                        <option value="laptop-price" {% if selected_dataset == 'laptop-price' %}selected{% endif %}>Laptop Price</option>
+                        <option value="customer-behaviour" {% if selected_dataset == 'customer-behaviour' %}selected{% endif %}>Customer Purchasing Behaviour</option>
+                    </select>
+                    <br><br>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
+
+            <!-- Display success or error message based on backend response -->
+            {% if message %}
+                <div id="result">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
         </section>
     </main>
 </body>

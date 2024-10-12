@@ -1,6 +1,8 @@
-
 conda env create -f environment.yaml
 Run above command to create virtual environment 
+
+conda activate visio_env
+run this command to activate virtual environment
 
 
 uvicorn main:app --reload
