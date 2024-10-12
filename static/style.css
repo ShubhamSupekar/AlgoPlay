@@ -1,63 +1,198 @@
-/* Global Styles */
+/* General settings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #b6b5b5;
+    background-color: #5a5a5f;
     color: #333;
-}
-
-header {
-    background-color: #414a54;
-    color: white;
-    padding: 20px;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-h1 {
-    margin: 0;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 20px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-main {
-    padding: 40px;
-    text-align: center;
-}
-
-h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-/* File Upload Section */
-.file-upload-section {
-    margin-top: 20px;
+    line-height: 1.6;
+    font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-input[type="file"], select {
-    margin: 10px 0;
-    padding: 10px;
+header {
+    background-color: #242c35;
+    padding: 20px 0;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content h1 {
+    color: white;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-top: 10px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #357ABD;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 50%;
+}
+
+main {
+    margin-top: 50px;
+    max-width: 900px;
+    width: 90%;
+    padding: 20px;
+    background-color: rgb(63, 59, 59);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+p{
+    color: #e6e1e1;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #e6e1e1;
+}
+
+.file-upload-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.file-upload-section form {
+    display: inline-block;
+    text-align: left;
+}
+
+.file-upload-section select {
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.file-upload-section select:hover, 
+.file-upload-section select:focus {
+    border-color: #4A90E2;
+}
+
+button[type="submit"] {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #357ABD;
+}
+
+/* Success/Error message */
+#result {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+#result p {
+    margin: 0;
+}
+
+#result p:contains("successfully") {
+    background-color: #4CAF50;
+}
+
+#result p:contains("Error") {
+    background-color: #E74C3C;
+}
+
+/* Dataset Columns Section */
+#columns-section {
+    margin-top: 30px;
+}
+
+#columns-section h3 {
+    text-align: center;
+    color: #e2dcdc;
+    margin-bottom: 15px;
+}
+
+.columns-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if there's not enough space */
+    justify-content: center; /* Center items horizontally */
+    padding-left: 0;
+    margin: 0; /* Remove default margin */
+}
+
+.columns-list li {
+    background-color: #f4f4f4;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin: 10px; /* Add margin around items */
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+    flex: 1 0 30%; /* Allow items to grow and shrink, set a base width of 30% */
+    max-width: 200px; /* Optional: set a max-width for better control */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Add slight shadow for better visibility */
+}
+
+.columns-list li:hover {
+    background-color: #e1e1e1;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    main {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    header {
+        text-align: center;
+    }
 }
