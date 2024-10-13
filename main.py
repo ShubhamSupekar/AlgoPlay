@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -36,6 +37,8 @@ async def home(request: Request):
         "selected_dataset": None
     })
 
+
+
 # Data processing
 @app.post("/process-dataset")
 async def process_dataset(request: Request, dataset: str = Form(...)):
@@ -63,6 +66,37 @@ async def process_dataset(request: Request, dataset: str = Form(...)):
         "selected_dataset": dataset,
         "columns": columns
     })
+
+
+
+# Removing unwanted columns from dataset 
+@app.post("/remove-columns")
+async def remove_columns(request: Request, columns_to_remove: List[str] = Form(...), dataset: str = Form(...)):
+    global df
+    if df is None:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": "No dataset loaded. Please load a dataset first."
+        })
+    
+    for clm in columns_to_remove:
+        if clm not in df.columns:
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "error": "Invalid predictor column selected."
+            })
+    
+    df = df.drop(columns=columns_to_remove, axis=1)  # Corrected parameter
+    message = f"{columns_to_remove} columns have been dropped from the dataset."
+    
+    return templates.TemplateResponse("index.html", {
+        "request": request, 
+        "RemoveClmMsg": message,  # Added missing comma here
+        "dataset_used": dataset,  # Show which dataset was used in training
+        "selected_dataset": dataset,
+        "columns": df.columns.tolist()  # Corrected method to get the list of columns
+    })
+
 
 
 
@@ -97,10 +131,16 @@ async def train_model(request: Request, predictor_column: str = Form(...), datas
     })
 
 
+
+
+
+
+
 # Model to return results
 class LinearRegressionResult(BaseModel):
     slope: float
     intercept: float
+
 
 # Serve the Learn page
 @app.get("/learn")

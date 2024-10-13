@@ -144,74 +144,62 @@ button[type="submit"]:hover {
 /* Style for the columns section */
 #columns-section {
     margin: 20px 0;
-    padding: 20px;
-    background-color: #1a1a1a; /* Black background */
+    padding: 15px;
+    background-color: #1a1a1a;
     border: 1px solid #333;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    color: #fff; /* White text */
+    color: #fff;
 }
 
 /* Heading styles */
-#columns-section h3,
-#columns-section h4 {
-    font-size: 1.5rem;
-    color: #fff; /* White text */
+#columns-section h3 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
-/* Create a grid layout for the columns list */
+/* Grid layout for dataset columns list */
 .columns-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Auto adjust columns */
-    grid-gap: 10px; /* Gap between items */
-    list-style-type: none;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: 8px;
     padding: 0;
     margin: 0;
+    list-style-type: none;
 }
 
+/* List item for columns */
 .columns-list li {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 5px;
-    background-color: #333; /* Dark background for list items */
+    background-color: #333;
     border-radius: 5px;
-    text-align: left;
-    color: #fff; /* White text for list items */
-    font-size: 1rem;
+    color: #fff;
+    font-size: 0.9rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    word-wrap: break-word; /* Allow text to wrap to the next line */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ellipsis if text is too long */
-    white-space: nowrap; /* Prevent text from overflowing */
-    max-width: 100%; /* Ensure it stays within the box */
+    white-space: nowrap;          /* Prevent text from wrapping */
+    overflow: hidden;             /* Hide overflowing text */
+    text-overflow: ellipsis;      /* Show ellipsis for long text */
+    max-width: 100%;              /* Ensure the width stays within the box */
 }
 
-/* Dropdown select box styles */
-#columns-section select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 2px solid #4caf50; /* Green border */
-    border-radius: 5px;
-    background-color: #333; /* Dark dropdown background */
-    color: #fff; /* White text */
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    transition: border-color 0.3s ease;
-}
-
-#columns-section select:focus {
-    border-color: #28a745; /* Darker green when focused */
+/* Adjust spacing for checkboxes and labels */
+.columns-list input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(0.9);
 }
 
 /* Button styles */
 #columns-section button {
     display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1rem;
+    margin-top: 15px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
     font-weight: bold;
-    color: #fff; /* White text */
-    background-color: #4caf50; /* Green button */
+    color: #fff;
+    background-color: #4caf50;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -220,25 +208,55 @@ button[type="submit"]:hover {
 }
 
 #columns-section button:hover {
-    background-color: #28a745; /* Darker green on hover */
+    background-color: #28a745;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    #columns-section {
-        padding: 15px;
-    }
+/* Styles for the prediction column section */
+#prediction-column-section {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #252525;
+    border: 1px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
 
-    #columns-section select {
-        font-size: 0.9rem;
-    }
+#prediction-column-section h4 {
+    font-size: 1.25rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
 
-    #columns-section button {
-        font-size: 0.9rem;
-        padding: 8px 16px;
-    }
+#prediction-column-section select {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+    border: 2px solid #4caf50;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease;
+    margin-top: 10px;
+}
 
-    .columns-list li {
-        font-size: 0.9rem;
-    }
+#prediction-column-section button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+#prediction-column-section button:hover {
+    background-color: #28a745;
 }

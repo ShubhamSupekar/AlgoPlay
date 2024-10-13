@@ -45,29 +45,46 @@
 
             <!-- Display dataset columns if available -->
             {% if columns %}
-                <div id="columns-section">
-                    <h3>Dataset Columns:</h3>
-                    <ul class="columns-list">
-                        {% for column in columns %}
-                            <li>{{ column }}</li>
-                        {% endfor %}
-                    </ul>
+                    <div id="columns-section">
+                        <h3>Dataset Columns:</h3>
+                        <form id="columns-form" method="POST" action="/remove-columns">
+                            <ul class="columns-list">
+                                {% for column in columns %}
+                                    <li>
+                                        <input type="checkbox" name="columns_to_remove" value="{{ column }}">
+                                        <label>{{ column }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <!-- Hidden field to pass the selected dataset name to /train -->
+                            <input type="hidden" name="dataset" value="{{ selected_dataset }}">
+                            
+                            <!-- Submit button to remove selected columns -->
+                            <button type="submit">Remove Selected Columns</button>
+                                {% if RemoveClmMsg %}
+                                        <p>{{ RemoveClmMsg }}</p>
+                                    </div>
+                                {% endif %}
+                        </form>
+                    </div>
 
                     <!-- Dropdown to select a field to predict -->
-                    <form action="/train" method="post">
-                        <h4>Select a Column for Prediction:</h4>
-                        <select name="predictor_column" required>
-                            <option value="">Select a column</option>
-                            {% for column in columns %}
-                                <option value="{{ column }}">{{ column }}</option>
-                            {% endfor %}
-                        </select>
-
-                        <!-- Hidden field to pass the selected dataset name to /train -->
-                        <input type="hidden" name="dataset" value="{{ selected_dataset }}">
-                        <br><br>
-                        <button type="submit">Train Model</button>
-                    </form>
+                    <div id="prediction-column-section">
+                        <form action="/train" method="post">
+                            <h4>Select a Column for Prediction:</h4>
+                            <select name="predictor_column" required>
+                                <option value="">Select a column</option>
+                                {% for column in columns %}
+                                    <option value="{{ column }}">{{ column }}</option>
+                                {% endfor %}
+                            </select>
+                
+                            <!-- Hidden field to pass the selected dataset name to /train -->
+                            <input type="hidden" name="dataset" value="{{ selected_dataset }}">
+                            <br><br>
+                            <button type="submit">Train Model</button>
+                        </form>
+                    </div>
                 </div>
             {% endif %}
 
