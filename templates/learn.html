@@ -41,11 +41,25 @@
         <h1>Learn</h1>
         <a href="/" class="home-button">Home</a>
     </header>
-
+        <!-- Sidebar Structure -->
+        <div class="sidebar">
+            <h2>Models</h2>
+            <ul>
+                <li><a href="#linear-regression">Linear Regression</a></li>
+                <li><a href="#decision-tree">Decision Tree</a></li>
+                <li><a href="#random-forest">Random Forest</a></li>
+                <li><a href="#svm">Support Vector Machine</a></li>
+                <li><a href="#k-means">K-Means Clustering</a></li>
+                <li><a href="#neural-networks">Neural Networks</a></li>
+            </ul>
+        </div>
     <main>
-    <h1>Linear Regression</h1>
-        <section>
-            <h2>Step 1: Python Code</h2>
+
+    <!-- Main content area -->
+    <div class="content">
+        <section id = "linear-regression">
+            <h2>Linear Regression</h2>
+            <h3>Python Code</h3>
             <pre>
                 <code id="pythonCode">
 import numpy as np
@@ -68,10 +82,7 @@ print(f"Linear Equation: y = {m}x + {b}")
             <button onclick="showPythonResult()">Run Python Code</button>
             <button onclick="copyToClipboard(document.getElementById('pythonCode').innerText)">Copy Code</button>
             <div id="python-result"></div>
-        </section>
-
-        <section id="math-solution" style="display:none;">
-            <h2>Step 2: Mathematical Solution</h2>
+            <h3>Mathematical Solution</h3>
             <p>Let's calculate the slope (m) and intercept (b) step-by-step:</p>
 
             <h3>1. Sum Calculations</h3>
@@ -82,7 +93,7 @@ print(f"Linear Equation: y = {m}x + {b}")
                 <li>Sum of xy: ( ∑xy = 6 + 28 + 30 + 80 = 144 )</li>
             </ul>
 
-            <h3>2. Calculating the Slope (m)</h3>
+            <h3>Calculating the Slope (m)</h3>
             <p>
                 Using the formula:
                 m= [n(Σxy)−(Σx)(Σy)] / [n(Σx²)-(Σx)²]
@@ -98,7 +109,7 @@ print(f"Linear Equation: y = {m}x + {b}")
                 <li>m = 0.95</li>   
             </p>
 
-            <h3>3. Calculating the Intercept (b)</h3>
+            <h3>Calculating the Intercept (b)</h3>
             <p>
                 Using the formula:
                 b = [(Σy)(Σx²)-(Σx)(Σxy)] / [n(Σx²)-(Σx)²]
@@ -109,10 +120,38 @@ print(f"Linear Equation: y = {m}x + {b}")
                 <li>b = 1.5</li>    
             </p>
 
-            <h3>4. Final Linear Equation</h3>
+            <h3>Final Linear Equation</h3>
             <p> y = mx + b</p>
             <p>The equation of the line is: ( y = 0.95x + 1.5 )</p>
         </section>
+
+
+        <section id="decision-tree">
+            <h2>Decision Tree</h2>
+            <p>A Decision Tree is a supervised learning method used for classification and regression tasks.</p>
+        </section>
+
+        <section id="random-forest">
+            <h2>Random Forest</h2>
+            <p>Random Forest is an ensemble learning method used for classification, regression, and other tasks.</p>
+        </section>
+
+        <section id="svm">
+            <h2>Support Vector Machine</h2>
+            <p>SVM is a powerful classification algorithm that works well for high-dimensional spaces.</p>
+        </section>
+
+        <section id="k-means">
+            <h2>K-Means Clustering</h2>
+            <p>K-Means is an unsupervised learning algorithm used for clustering data into groups.</p>
+        </section>
+
+        <section id="neural-networks">
+            <h2>Neural Networks</h2>
+            <p>Neural Networks are a class of models inspired by the human brain, used for complex tasks like image and speech recognition.</p>
+        </section>
+    </div>
     </main>
+    <footer></footer>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlgoPlay</title>
-    <link rel="stylesheet" href="static\style.css">
+    <link rel="stylesheet" href="static\index.css">
 </head>
 <body>
     <header>
@@ -14,6 +14,13 @@
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">Models</a>
+                    <div class="dropdown-content">
+                        <a href="#linear-regression">Linear Regression</a>
+                        <!-- Add more model links here -->
+                    </div>
+                </li>
                 <li><a href="/learn">Learn</a></li>
                 <li><a href="#">Contact Us</a></li>
             </ul>
@@ -21,7 +28,7 @@
     </header>
 
     <main>
-        <section>
+        <section id="linear-regression">
             <h2>Linear Regression</h2>
             <div class="file-upload-section">
                 <form action="/process-dataset" method="post">
