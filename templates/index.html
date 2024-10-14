@@ -91,7 +91,7 @@
             <!-- Display best features, R² value, and dataset used -->
             {% if best_features %}
                 <div id="result">
-                    <h3>Best Features:</h3>
+                    <h3>To predict {{predict_column}} these are the Best Features:</h3>
                     <ul>
                         {% for feature in best_features %}
                             <li>{{ feature }}</li>

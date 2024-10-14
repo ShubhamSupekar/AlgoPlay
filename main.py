@@ -124,6 +124,7 @@ async def train_model(request: Request, predictor_column: str = Form(...), datas
     # Return the template with the dataset, best features, and R² score
     return templates.TemplateResponse("index.html", {
         "request": request,
+        "predict_column":predictor_column,
         "best_features": best_features,
         "best_r2": best_r2,
         "dataset_used": dataset,  # Show which dataset was used in training
@@ -146,6 +147,7 @@ class LinearRegressionResult(BaseModel):
 @app.get("/learn")
 async def get_learn_page(request: Request):
     return templates.TemplateResponse("learn.html", {"request": request})
+
 
 # Endpoint to run the Python code and return the result
 @app.post("/run-python", response_model=LinearRegressionResult)

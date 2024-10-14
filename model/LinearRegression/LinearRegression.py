@@ -8,27 +8,22 @@ def LoadDataset(df):
     return df.columns
 
 def StartTraining(target_column, df):
+
+    # Drop rows with missing values
+    df = df.dropna()
+    
     # Remove the target column from the list of features
     df_features = df.drop(target_column, axis=1)
 
-    # Step 3: Calculate the correlation matrix and apply the threshold
-    correlation_matrix = df_features.corr().abs()
+    # List of all features
+    filtered_columns = df_features.columns.tolist()
 
-    # Step 4: Set a threshold for correlation (for example, 0.8)
-    threshold = 0.8
-    filtered_columns = df_features.columns.tolist()  # Use a list for filtering
-
-    for i in range(len(correlation_matrix.columns)):
-        for j in range(i):
-            if correlation_matrix.iloc[i, j] > threshold:
-                colname = correlation_matrix.columns[i]
-                if colname in filtered_columns:
-                    print(f"Removing highly correlated feature: {colname}")
-                    filtered_columns.remove(colname)
-
-    print(f"\nFiltered Features after applying correlation threshold: {filtered_columns}")
+    print(f"\nInitial Features: {filtered_columns}")
+    
+    # Perform forward selection
     best_features, best_r2 = forward_selection(filtered_columns.copy(), target_column, df)
     return best_features, best_r2
+
 
 # Stepwise forward selection function
 def forward_selection(features_list, target, df):
