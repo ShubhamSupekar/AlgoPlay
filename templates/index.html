@@ -17,7 +17,7 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">Models</a>
                     <div class="dropdown-content">
-                        <a href="#linear-regression">Linear Regression</a>
+                        <a href="#regression">Regression</a>
                         <!-- Add more model links here -->
                     </div>
                 </li>
@@ -28,8 +28,9 @@
     </header>
 
     <main>
-        <section id="linear-regression">
-            <h2>Linear Regression</h2>
+        <section id="regression">
+            <h2>Regression</h2>
+            <h3>Train all the Regression models on selected dataset</h3>
             <div class="file-upload-section">
                 <form action="/process-dataset" method="post">
                     <p>Select a dataset:</p>
@@ -95,23 +96,45 @@
                 </div>
             {% endif %}
 
-            <!-- Display best features, R² value, and dataset used -->
-            {% if best_features %}
-                <div id="result">
-                    <h3>To predict {{predict_column}} these are the Best Features:</h3>
-                    <ul>
-                        {% for feature in best_features %}
-                            <li>{{ feature }}</li>
-                        {% endfor %}
-                    </ul>
-                    <p><strong>Best R² Value:</strong> {{ best_r2 }}</p>
-                    
+        <!-- Display best model and features -->
+        {% if best_model %}
                     <!-- Display the dataset used for training -->
                     {% if dataset_used %}
                         <p><strong>Dataset Used:</strong> {{ dataset_used }}</p>
                     {% endif %}
-                </div>
-            {% endif %}
+            <div id="best-result">
+                <h3>The best model for predicting {{ predict_column }} is: {{ best_model }}</h3>
+                <h4>Best Features:</h4>
+                <ul>
+                    {% for feature in best_features %}
+                        <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <p><strong>Best R² Value:</strong> {{ best_r2 }}</p>
+            </div>
+        {% endif %}
+
+        <!-- Display other model results -->
+        {% if other_models %}
+            <div id="other-results">
+                <h3>Other Models Results:</h3>
+                <ul>
+                    {% for result in other_models %}
+                        <li>
+                            <h4>Model: {{ result.model }}</h4>
+                            <h5>Features:</h5>
+                            <ul>
+                                {% for feature in result.features %}
+                                    <li>{{ feature }}</li>
+                                {% endfor %}
+                            </ul>
+                            <p><strong>R² Value:</strong> {{ result.r2_score }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
         </section>
     </main>
 </body>

@@ -117,29 +117,57 @@ button[type="submit"]:hover {
     background-color: #357ABD;
 }
 
-#result {
-    background-color: #222;  /* Dark background */
-    color: #fff;              /* White text */
-    border-radius: 5px;       /* Rounded corners */
-    padding: 15px;            /* Padding */
-    margin-top: 20px;         /* Spacing above */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+#best-result {
+    background-color: #2c2c2c;  /* Slightly lighter dark background for best result */
+    color: #fff;                 /* White text */
+    border-radius: 5px;         /* Rounded corners */
+    padding: 15px;              /* Padding */
+    margin-top: 20px;           /* Spacing above */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); /* More pronounced shadow */
 }
 
-#result h3 {
-    border-bottom: 2px solid #444; /* Underline for header */
+#best-result h3 {
+    border-bottom: 2px solid #444; /* Underline for best result header */
     padding-bottom: 10px;          /* Space below the header */
 }
 
-#result ul {
+#best-result ul {
     list-style-type: disc; /* Bullet points for list */
-    padding-left: 20px;   /* Indentation for list */
+    padding-left: 20px;    /* Indentation for list */
 }
 
-#result p {
+#best-result p {
     font-weight: bold;      /* Bold text for R² value */
 }
 
+#other-results {
+    background-color: #1a1a1a;  /* Darker background for other results */
+    color: #fff;                /* White text */
+    border-radius: 5px;        /* Rounded corners */
+    padding: 15px;             /* Padding */
+    margin-top: 20px;          /* Spacing above */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+}
+
+#other-results h4 {
+    border-top: 2px solid #555; Underline for other results header
+    padding-bottom: 8px;           /* Space below the header */
+}
+
+#other-results ul {
+    list-style-type: circle; /* Circle bullet points for other models */
+    padding-left: 20px;      /* Indentation for list */
+}
+
+#other-results p {
+    font-weight: normal;      /* Normal weight for additional info */
+}
+
+#regression h3{
+    color: #cdc6c6;
+    text-align: center;
+    margin-bottom: 5px;
+}
 
 /* Style for the columns section */
 #columns-section {
