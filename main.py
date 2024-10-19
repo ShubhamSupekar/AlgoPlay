@@ -98,6 +98,7 @@ async def remove_columns(request: Request, columns_to_remove: List[str] = Form(.
     })
 
 
+# FastAPI endpoint for training
 @app.post("/train")
 async def train_model(request: Request, predictor_column: str = Form(...), dataset: str = Form(...)):
     global df  # Access the global df variable
@@ -119,38 +120,39 @@ async def train_model(request: Request, predictor_column: str = Form(...), datas
     # Train the model using the selected predictor column
     results = lr.StartTraining(predictor_column, df)
 
-    # Prepare the output for each model in a list format
+    # Prepare the output for each model in a list format, including accuracy percentage
     model_results = [
         {
-            "model": result[0],
-            "features": result[1],
-            "r2_score": result[2]
+            "model": result[0],           # Model name
+            "features": result[1],        # Selected features
+            "r2_score": result[2],        # R² score
+            "rmse": result[3],            # RMSE value
+            "accuracy": result[4]         # Accuracy percentage
         } for result in results
     ]
 
-    # Sort model results by R² score in decreasing order
-    model_results.sort(key=lambda x: x['r2_score'], reverse=True)
+    # Sort model results by both R² score (decreasing) and RMSE (increasing)
+    model_results.sort(key=lambda x: (-x['r2_score'], x['rmse']))
 
-    # Find the best model based on R² score (first in sorted list)
+    # Find the best model based on both R² score and prediction accuracy
     best_model_result = model_results[0] if model_results else None
-    
+
     # Prepare a list of models excluding the best model for display
     other_models = model_results[1:] if model_results else []
 
-    # Return the template with the best model and all models
+    # Return the template with the best model, all models, and added accuracy percentage
     return templates.TemplateResponse("index.html", {
         "request": request,
         "predict_column": predictor_column,
         "best_model": best_model_result['model'] if best_model_result else None,  # Best model name
         "best_features": best_model_result['features'] if best_model_result else None,  # Best features
         "best_r2": best_model_result['r2_score'] if best_model_result else None,  # Best R² score
+        "best_rmse": best_model_result['rmse'] if best_model_result else None,  # Best RMSE
+        "best_accuracy": best_model_result['accuracy'] if best_model_result else None,  # Best Accuracy percentage
         "other_models": other_models,  # All other models
         "dataset_used": dataset,  # Show which dataset was used in training
         "selected_dataset": dataset
     })
-
-
-
 
 
 

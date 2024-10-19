@@ -111,6 +111,8 @@
                     {% endfor %}
                 </ul>
                 <p><strong>Best R² Value:</strong> {{ best_r2 }}</p>
+                <p><strong>Best Mean Squared Error:</strong> {{ best_rmse }}</p>
+                <p><strong>Best Accuracy:</strong> {{ best_accuracy }} %</p>
             </div>
         {% endif %}
 
@@ -129,6 +131,8 @@
                                 {% endfor %}
                             </ul>
                             <p><strong>R² Value:</strong> {{ result.r2_score }}</p>
+                            <p><strong> Mean Squared Error:</strong> {{ result.rmse }}</p>
+                            <p><strong> Accuracy:</strong> {{ result.accuracy }} %</p>
                         </li>
                     {% endfor %}
                 </ul>

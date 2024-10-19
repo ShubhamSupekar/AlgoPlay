@@ -7,3 +7,9 @@ run this command to activate virtual environment
 
 uvicorn main:app --reload
 to run webapp run above command 
+
+
+
+To calculate Accuracy of Regression model this is the formula:
+ 
+Accuracy(%) = 100 x [1-(RMSE/Mean of Actual Values)]
