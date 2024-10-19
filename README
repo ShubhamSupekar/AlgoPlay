@@ -10,6 +10,6 @@ to run webapp run above command
 
 
 
-To calculate Accuracy of Regression model this is the formula:
+I have calculated the Accuracy of Regression model based on this formula:
  
 Accuracy(%) = 100 x [1-(RMSE/Mean of Actual Values)]
