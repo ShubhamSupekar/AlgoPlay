@@ -4,6 +4,7 @@ from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import r2_score
 from sklearn.feature_selection import RFE
@@ -45,12 +46,13 @@ def StartTraining(target_column, df):
     print(f"\nInitial Features: {filtered_columns}")
 
     # Perform RFE with multiple models
-    results = select_features_with_rfe(filtered_columns, target_column, df)
+    results = select_features_with_Mutual_Information(filtered_columns, target_column, df)
 
     return results  # Return the results list
 
-# Feature selection using Recursive Feature Elimination (RFE) for different models
-def select_features_with_rfe(features_list, target, df):
+
+
+def select_features_with_Mutual_Information(features_list, target, df):
     results = []  # Store results in a list
 
     # Available models, including PyTorch Neural Network
@@ -67,31 +69,28 @@ def select_features_with_rfe(features_list, target, df):
     }
 
     # Parallelize feature selection and model evaluation
-    results = Parallel(n_jobs=-1)(delayed(evaluate_model_with_rfe)(model_name, model, df, features_list, target)
+    results = Parallel(n_jobs=-1)(delayed(evaluate_model_with_feature_importance)(model_name, model, df, features_list, target)
                                    for model_name, model in models.items())
 
     return results  # Return the list of results
 
-# Helper function to perform RFE and evaluate each model
-def evaluate_model_with_rfe(model_name, model, df, features, target):
+
+
+
+
+# Helper function to perform feature selection and evaluate each model
+def evaluate_model_with_feature_importance(model_name, model, df, features, target):
     X = df[features]
     y = df[target]
 
-    # Perform RFE with the model, skipping for PyTorch (RFE only for sklearn models)
-    if model_name != 'PyTorchNN':
-        rfe = RFE(estimator=model, n_features_to_select=5)  # Select top 5 features
-        X_rfe = rfe.fit_transform(X, y)
-    else:
-        X_rfe = X.values  # No RFE for PyTorch
-
     # Split the dataset
-    X_train, X_test, y_train, y_test = train_test_split(X_rfe, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     if model_name == 'PyTorchNN':
         # Convert data to PyTorch tensors and use GPU
-        X_train_tensor = torch.tensor(X_train, dtype=torch.float32).cuda()
+        X_train_tensor = torch.tensor(X_train.values, dtype=torch.float32).cuda()
         y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32).cuda().unsqueeze(1)
-        X_test_tensor = torch.tensor(X_test, dtype=torch.float32).cuda()
+        X_test_tensor = torch.tensor(X_test.values, dtype=torch.float32).cuda()
         y_test_tensor = torch.tensor(y_test.values, dtype=torch.float32).cuda().unsqueeze(1)
 
         # Initialize PyTorch model
@@ -119,7 +118,8 @@ def evaluate_model_with_rfe(model_name, model, df, features, target):
             y_pred = model(X_test_tensor).cpu().numpy()
 
         r2 = r2_score(y_test, y_pred)
-        selected_features = features  # No RFE applied
+        selected_features = features  # No feature importance for PyTorch
+
     else:
         # Train the model for scikit-learn models
         model.fit(X_train, y_train)
@@ -128,16 +128,22 @@ def evaluate_model_with_rfe(model_name, model, df, features, target):
         # Calculate the R² score
         r2 = r2_score(y_test, y_pred)
 
-        # Get the selected features for scikit-learn models
-        selected_features = [features[i] for i in range(len(features)) if rfe.support_[i]]
+        if model_name in ['RandomForest', 'GradientBoosting']:
+            # Feature importance for tree-based models
+            importances = model.feature_importances_
+            selected_features = [features[i] for i in range(len(features)) if importances[i] > 0]  # Use all important features
+
+            # Print feature importance
+            print(f"Model: {model_name}, Feature Importances: {importances}")
+        else:
+            # Use Mutual Information for non-tree-based models
+            mi = mutual_info_regression(X_train, y_train)
+            selected_features = [features[i] for i in range(len(features)) if mi[i] > 0]  # Use features with positive MI
+
+            # Print Mutual Information scores
+            print(f"Model: {model_name}, Mutual Information Scores: {mi}")
 
     # Print the model, selected features, and R² score
     print(f"Model: {model_name}, Selected Features: {selected_features}, R² score: {r2:.4f}")
 
     return model_name, selected_features, r2  # Return results
-
-# Example usage:
-# df = pd.read_csv('your_dataset.csv')
-# target_column = 'target_column_name'
-# results = StartTraining(target_column, df)
-# print(f"\nResults: {results}")  
